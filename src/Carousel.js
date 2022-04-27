@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./Carousel.css";
 import Card from "./Card";
 
-
 /** Carousel: displays images and arrows to navigate through them
  *
  * Props:
@@ -14,12 +13,12 @@ import Card from "./Card";
  *
  * App --> Carousel --> Card
  */
- function Carousel({ photos, title }) {
+function Carousel({ photos, title }) {
   const [currCardIdx, setCurrCardIdx] = useState(0);
 
   const currCard = photos[currCardIdx];
   const total = photos.length;
-
+  const hidden = currCardIdx === 0;
   //Increments currCardIdx state by 1
   function goForward() {
     setCurrCardIdx(currCardIdx + 1);
@@ -34,20 +33,30 @@ import Card from "./Card";
     <div className="Carousel">
       <h1>{title}</h1>
       <div className="Carousel-main">
-        <i
-          className="fas fa-chevron-circle-left fa-2x"
-          onClick={goBackward}
-        />
+        {!hidden && (
+          <i
+            className="fas fa-chevron-circle-left fa-2x"
+            onClick={goBackward}
+          />
+        )}
+
         <Card
           caption={currCard.caption}
           src={currCard.src}
           currNum={currCardIdx + 1}
           totalNum={total}
         />
-        <i
-          className="fas fa-chevron-circle-right fa-2x"
-          onClick={goForward}
-        />
+        {currCardIdx < total - 1 ? (
+          <i
+            className="fas fa-chevron-circle-right fa-2x"
+            onClick={goForward}
+          />
+        ) : (
+          <i
+            className="hidden fas fa-chevron-circle-right fa-2x"
+            onClick={goForward}
+          />
+        )}
       </div>
     </div>
   );
